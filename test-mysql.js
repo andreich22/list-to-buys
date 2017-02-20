@@ -27,11 +27,10 @@ app.get('/', function(req, resp) {
             } else {
                 console.log('sucess\n');
                 console.log(rows);
-                resp.send(rows)
+                resp.send(rows);
             }
         }
     )
-    
 })
 
 app.listen(1337);
