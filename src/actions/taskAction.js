@@ -27,9 +27,10 @@ export function deleteTask() {
  * Создать задачу
  * @returns {ReduxAction}
  */
-export function createTask() {
+export function createTask(payload) {
     return {
         type: types.TASK_CREATE,
+        payload: payload
     };
 }
 

@@ -18,10 +18,17 @@ connection.connect(function(error){
     }
 })
 
-app.get('/', function(req, resp) {
+var myLogger = function (req, res, next) {
+  console.log('LOGGED');
+  next();
+};
+
+app.use(myLogger);
+
+app.get('/gte-item', function(req, resp, next) {
     connection.query(
         'SELECT * FROM items', 
-        function(errors, rows, fields){
+        function(errors, rows, fields) {
             if(!!errors) {
                 console.log('error in the query');
             } else {
@@ -33,4 +40,4 @@ app.get('/', function(req, resp) {
     )
 })
 
-app.listen(1337);
+app.listen(3001);

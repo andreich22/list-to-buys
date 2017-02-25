@@ -41,9 +41,28 @@ class App extends Component {
         neededCreateNewTask  : PropTypes.bool,
     };
 
-  //добавить новую задчу
+  //добавить новую задчу //'http://localhost:3001/gte-item
   addNewTask () {
-    this.actionsTask.createTask()
+    const url = 'http://localhost:3000/gte-item';
+    const createTask = this.actionsTask.createTask
+    fetch(url, {  
+      method: 'post',  
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'  
+      },  
+      body: '{"text": "items"}'
+    })
+    .then(function(response) {
+//      console.log(response.headers.get('Content-Type')); // application/json; charset=utf-8
+  //    console.log(response.status); // 200
+      return response.json();
+    })
+    .then(function(response) {
+      createTask(response)
+      return response;
+      
+    })
+    .catch( alert );
   }
 
 
@@ -78,6 +97,7 @@ class App extends Component {
   editFieldTask (x) {
     const {name, value} = x.target
     this.actionsTask.editField({name, value, typeTask : 'editedTask' })
+    
   }
 
   //Схранить созданую задачу

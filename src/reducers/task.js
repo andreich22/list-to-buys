@@ -53,6 +53,7 @@ export default function task(state = initialState, action) {
             return helpers.deleteTask(state, payload)
       //создает задачу
         case types.TASK_CREATE:
+        console.log('payload', payload)
             return helpers.createTask(state, payload)
       //Отменить создание новой задачи
         case types.TASK_CREATE_CANCEL:
