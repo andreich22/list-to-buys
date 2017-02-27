@@ -40,21 +40,37 @@ class App extends Component {
         startEditedTask  : PropTypes.bool,
         neededCreateNewTask  : PropTypes.bool,
     };
-
-  //добавить новую задчу //'http://localhost:3001/gte-item
+ 
+  
   addNewTask () {
-    const url = 'http://localhost:3000/gte-item';
+    const url = 'http://localhost:3000/list/?url=new_list';
     const createTask = this.actionsTask.createTask
+    //POST
+//     fetch(url, {  
+//       method: 'post',  
+//       headers: {
+//         'Content-type': 'application/json; charset=UTF-8'  
+//       },  
+//       body: '{"text": "items"}'
+//     })
+//     .then(function(response) {
+//       return response.json();
+//     })
+//     .then(function(response) {
+//       createTask(response)
+//       return response;
+      
+//     })
+//     .catch( alert );
+
+    //GET
     fetch(url, {  
-      method: 'post',  
+      method: 'get',  
       headers: {
         'Content-type': 'application/json; charset=UTF-8'  
-      },  
-      body: '{"text": "items"}'
+      }
     })
     .then(function(response) {
-//      console.log(response.headers.get('Content-Type')); // application/json; charset=utf-8
-  //    console.log(response.status); // 200
       return response.json();
     })
     .then(function(response) {

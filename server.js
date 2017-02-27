@@ -2,7 +2,9 @@ var webpack = require('webpack')
 var webpackDevMiddleware = require('webpack-dev-middleware')
 var webpackHotMiddleware = require('webpack-hot-middleware')
 var mysql = require('mysql');
-var app = new (require('express'))()
+var express = require('express');
+var app = express();
+var router = express.Router(['caseSensitive'])
 var config = require('./webpack.config')
 var bodyParser = require('body-parser')
 
@@ -43,21 +45,11 @@ var myLogger = function (req, res, next) {
 
 app.use(myLogger);
 
-app.get('/gte-item', function(req, resp, next) {
-    connection.query(
-        'SELECT * FROM items', 
-        function(errors, rows, fields) {
-            if(!!errors) {
-                console.log('error in the query', errors);
-            } else {
-                console.log('sucess\n');
-                resp.send(rows);
-            }
-        }
-    )
-})
+function getUrl() {
+    return '/list/*';
+}
 
-app.post('/gte-item', function(req, resp, next) {
+app.post(getUrl(), function(req, resp, next) {
     console.log('req.body', req.body.text)
     var text = req.body.text;
     connection.query(
@@ -72,6 +64,53 @@ app.post('/gte-item', function(req, resp, next) {
         }
     )
 })
+
+app.get(getUrl(), function(req, resp, next) {
+    console.log('req.query.ur', req.query.url)
+    connection.query(
+        'SELECT `id`, `user_id`, `url`, `public` FROM `list` WHERE `url` = \'new_list\'', 
+        function(errors, rows, fields) {
+            if(!!errors) {
+                console.log('error in the query', errors);
+            } else {
+                console.log('sucess\n');
+                resp.send(rows);
+            }
+        }
+    )
+})
+
+// var getList = function( req, resp, next) {
+//     // console.log('req.body', req.body.text)
+//     // var text = req.body.text;
+//     connection.query(
+//         'SELECT * FROM `items`', 
+//         function(errors, rows, fields) {
+//             if(!!errors) {
+//                 console.log('error in the query', errors);
+//             } else {
+//                 console.log('sucess\n');
+//                 resp.send(rows);
+//             }
+//         }
+//     )
+// };
+
+// router.all('*', function( req, resp, next) {
+//     // console.log('req.body', req.body.text)
+//     // var text = req.body.text;
+//     connection.query(
+//         'SELECT * FROM `items`', 
+//         function(errors, rows, fields) {
+//             if(!!errors) {
+//                 console.log('error in the query', errors);
+//             } else {
+//                 console.log('sucess\n');
+//                 resp.send(rows);
+//             }
+//         }
+//     )
+// });
 
 app.listen(port, function(error) {
   if (error) {
