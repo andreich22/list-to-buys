@@ -28,6 +28,7 @@ module.exports = {
         loaders: ['eslint'],
         include: [
           path.resolve(__dirname, "src"),
+          path.resolve(__dirname, "request"),
         ],
       }
     ],
@@ -36,6 +37,7 @@ module.exports = {
         loaders: ['react-hot', 'babel-loader'],
         include: [
           path.resolve(__dirname, "src"),
+          path.resolve(__dirname, "request"),
         ],
         test: /\.js$/,
         plugins: ['transform-runtime'],

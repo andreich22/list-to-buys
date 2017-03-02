@@ -13,11 +13,7 @@ var port = 3000
 var compiler = webpack(config)
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }))
 app.use(webpackHotMiddleware(compiler))
-
-app.use(bodyParser.json());       // to support JSON-encoded bodies
-// app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-//   extended: true
-// })); 
+app.use(bodyParser.json()); 
 
 app.get("/", function(req, res) {
   res.sendFile(__dirname + '/index.html')
@@ -39,7 +35,6 @@ connection.connect(function(error){
 })
 
 var myLogger = function (req, res, next) {
-  console.log('LOGGED');
   next();
 };
 
@@ -49,27 +44,34 @@ function getUrl() {
     return '/list/*';
 }
 
+function getSqlRequest(url, body) {
+    var sqlRequest = {
+        new_list: function(param) { return 'SELECT * FROM ' + param.text},
+    }
+
+    return sqlRequest[url](body)
+}
+
+
 app.post(getUrl(), function(req, resp, next) {
-    console.log('req.body', req.body.text)
-    var text = req.body.text;
     connection.query(
-        'SELECT * FROM ' + text, 
-        function(errors, rows, fields) {
+        getSqlRequest(req.query.url, req.body), 
+        function(errors, rows) {
             if(!!errors) {
                 console.log('error in the query', errors);
             } else {
                 console.log('sucess\n');
                 resp.send(rows);
+                
             }
         }
     )
 })
 
 app.get(getUrl(), function(req, resp, next) {
-    console.log('req.query.ur', req.query.url)
     connection.query(
         'SELECT `id`, `user_id`, `url`, `public` FROM `list` WHERE `url` = \'new_list\'', 
-        function(errors, rows, fields) {
+        function(errors, rows) {
             if(!!errors) {
                 console.log('error in the query', errors);
             } else {
@@ -79,38 +81,6 @@ app.get(getUrl(), function(req, resp, next) {
         }
     )
 })
-
-// var getList = function( req, resp, next) {
-//     // console.log('req.body', req.body.text)
-//     // var text = req.body.text;
-//     connection.query(
-//         'SELECT * FROM `items`', 
-//         function(errors, rows, fields) {
-//             if(!!errors) {
-//                 console.log('error in the query', errors);
-//             } else {
-//                 console.log('sucess\n');
-//                 resp.send(rows);
-//             }
-//         }
-//     )
-// };
-
-// router.all('*', function( req, resp, next) {
-//     // console.log('req.body', req.body.text)
-//     // var text = req.body.text;
-//     connection.query(
-//         'SELECT * FROM `items`', 
-//         function(errors, rows, fields) {
-//             if(!!errors) {
-//                 console.log('error in the query', errors);
-//             } else {
-//                 console.log('sucess\n');
-//                 resp.send(rows);
-//             }
-//         }
-//     )
-// });
 
 app.listen(port, function(error) {
   if (error) {

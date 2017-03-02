@@ -1,10 +1,12 @@
 import React, { Component, PropTypes} from 'react'
-import {connect}              from 'react-redux';
+import { connect }              from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ButtonBasic from '../components/button/ButtonBasic'
 import ListLView from '../components/listLView/ListLView'
 import ModalBase from '../components/modal/ModalBase'
 import * as taskAction from '../actions/taskAction'
+import { postRequest } from '../../request/request'
+
 
 /**
  * Класс, создающий контейнер приложения.
@@ -44,43 +46,9 @@ class App extends Component {
   
   addNewTask () {
     const url = 'http://localhost:3000/list/?url=new_list';
-    const createTask = this.actionsTask.createTask
-    //POST
-//     fetch(url, {  
-//       method: 'post',  
-//       headers: {
-//         'Content-type': 'application/json; charset=UTF-8'  
-//       },  
-//       body: '{"text": "items"}'
-//     })
-//     .then(function(response) {
-//       return response.json();
-//     })
-//     .then(function(response) {
-//       createTask(response)
-//       return response;
-      
-//     })
-//     .catch( alert );
-
-    //GET
-    fetch(url, {  
-      method: 'get',  
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8'  
-      }
-    })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(response) {
-      createTask(response)
-      return response;
-      
-    })
-    .catch( alert );
+    const {createTask} = this.actionsTask;
+    postRequest(url, {text: 'items'}, createTask);
   }
-
 
   //Удалить задачу Mark for Removal
   deleteTask () {

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node start.js"
+    "test": "node start.js",
+    "debustart": "node --debugg start.js"
   },
   "author": "Andrei Myskov",
   "license": "ISC",
