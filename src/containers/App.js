@@ -5,7 +5,7 @@ import ButtonBasic from '../components/button/ButtonBasic'
 import ListLView from '../components/listLView/ListLView'
 import ModalBase from '../components/modal/ModalBase'
 import * as taskAction from '../actions/taskAction'
-import { postRequest } from '../../request/request'
+// import { postRequest } from '../../request/request'
 
 
 /**
@@ -45,9 +45,36 @@ class App extends Component {
  
   
   addNewTask () {
-    const url = 'http://localhost:3000/list/?url=new_list';
-    const {createTask} = this.actionsTask;
-    postRequest(url, {text: 'items'}, createTask);
+    // const url = 'http://localhost:3000/list/?url=new_list';
+    const wsUrl = 'ws://localhost:3000/ws'
+    // const {createTask} = this.actionsTask;
+    // postRequest(url, {text: 'items'}, createTask);
+
+
+    var socket = new WebSocket(wsUrl, ["soap", "wamp"]);
+
+    socket.onopen = function (event) {
+      console.log("Соединение установлено.", event);
+      socket.send('SELECT `id`, `user_id`, `url`, `public` FROM `list` WHERE `url` = \'new_list\''); 
+    };
+
+    socket.onclose = function(event) {
+      if (event.wasClean) {
+        console.log('Соединение закрыто чисто');
+      } else {
+        console.log('Обрыв соединения'); // например, "убит" процесс сервера
+      }
+      console.log('Код: ' + event.code + ' причина: ' + event.reason);
+    };
+
+    socket.onmessage = function (event) {
+       console.log(JSON.parse(event.data));
+    }
+
+    socket.onerror = function(error) {
+      console.log("Ошибка " + error.message);
+    };
+
   }
 
   //Удалить задачу Mark for Removal

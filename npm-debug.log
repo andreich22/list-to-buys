@@ -1,7 +1,6 @@
 0 info it worked if it ends with ok
 1 verbose cli [ '/home/andrey/.nvm/v5.8.0/bin/node',
 1 verbose cli   '/home/andrey/.nvm/v5.8.0/bin/npm',
-1 verbose cli   '--debug',
 1 verbose cli   'start' ]
 2 info using npm@3.7.3
 3 info using node@v5.8.0
@@ -28,7 +27,7 @@
 15 verbose pkgid color-music@1.0.0
 16 verbose cwd /home/andrey/project/list-to-buys
 17 error Linux 4.10.0-041000-generic
-18 error argv "/home/andrey/.nvm/v5.8.0/bin/node" "/home/andrey/.nvm/v5.8.0/bin/npm" "--debug" "start"
+18 error argv "/home/andrey/.nvm/v5.8.0/bin/node" "/home/andrey/.nvm/v5.8.0/bin/npm" "start"
 19 error node v5.8.0
 20 error npm  v3.7.3
 21 error code ELIFECYCLE

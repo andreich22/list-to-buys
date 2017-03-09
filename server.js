@@ -5,8 +5,10 @@ var mysql = require('mysql');
 var express = require('express');
 var app = express();
 var router = express.Router(['caseSensitive'])
+var expressWs = require('express-ws')(app);
 var config = require('./webpack.config')
 var bodyParser = require('body-parser')
+var sqlConnect = require('./config/sqlConennect')
 
 var port = 3000
 
@@ -19,12 +21,7 @@ app.get("/", function(req, res) {
   res.sendFile(__dirname + '/index.html')
 })
 
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'list-to-buys-BD'
-})
+var connection = mysql.createConnection(sqlConnect.sqlConnect)
 
 connection.connect(function(error){
     if(!!error) {
@@ -81,6 +78,21 @@ app.get(getUrl(), function(req, resp, next) {
         }
     )
 })
+
+app.ws('/ws', function(ws) {
+    ws.on('message', function(req) {
+        connection.query(
+        req,
+        function(errors, resp) {
+            if(!!errors) {
+                console.log('error in the query', errors);
+            }
+            console.log('resp server', resp)
+            ws.send(resp);
+        });
+     })
+});
+
 
 app.listen(port, function(error) {
   if (error) {

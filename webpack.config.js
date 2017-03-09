@@ -29,6 +29,7 @@ module.exports = {
         include: [
           path.resolve(__dirname, "src"),
           path.resolve(__dirname, "request"),
+          path.resolve(__dirname, "config"),
         ],
       }
     ],
@@ -38,6 +39,7 @@ module.exports = {
         include: [
           path.resolve(__dirname, "src"),
           path.resolve(__dirname, "request"),
+          path.resolve(__dirname, "config"),
         ],
         test: /\.js$/,
         plugins: ['transform-runtime'],
