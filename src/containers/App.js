@@ -52,7 +52,7 @@ class App extends Component {
 
 
     var socket = new WebSocket(wsUrl, ["soap", "wamp"]);
-
+    socket.binaryType = 'blob'
     socket.onopen = function (event) {
       console.log("Соединение установлено.", event);
       socket.send('SELECT `id`, `user_id`, `url`, `public` FROM `list` WHERE `url` = \'new_list\''); 
@@ -68,7 +68,14 @@ class App extends Component {
     };
 
     socket.onmessage = function (event) {
-       console.log(JSON.parse(event.data));
+      if(event.data instanceof Blob) {
+        const reader = new FileReader();
+        reader.addEventListener("loadend", function() {
+          console.log('reader.result', reader.result);
+        });
+        reader.readAsArrayBuffer(event.data)
+      }
+      
     }
 
     socket.onerror = function(error) {
