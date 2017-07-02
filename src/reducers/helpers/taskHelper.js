@@ -2,6 +2,7 @@ import {randomId} from '../../lib/id';
 
 
 export function toogleCheckbox (state, payload) {
+debugger
     let {tasks} = state;
     const {id, name} = payload;
     tasks[id][name] = !tasks[id][name];
@@ -107,7 +108,7 @@ export function taskSaveCreate (state) {
 /**
  * Отменить создание задачи
  */
-export function cancelCreateTask (state) {
+export function cancelCreateTask (state) {debugger
     return {...state, 
         neededCreateNewTask : false, 
         startEditedTask: false, 

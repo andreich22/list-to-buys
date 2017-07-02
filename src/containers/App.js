@@ -6,6 +6,11 @@ import ListLView from '../components/listLView/ListLView'
 import ModalBase from '../components/modal/ModalBase'
 import * as taskAction from '../actions/taskAction'
 
+import { DragDropContextProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+
+
+
 /**
  * Класс, создающий контейнер приложения.
  * @param {object} props  Свойства.
@@ -59,8 +64,9 @@ class App extends Component {
   }
 
   toogleChekbox (x) {
-    const {id, target : {name}} = x
+    const {id, name} = x
     this.actionsTask.toogleChekbox({id, name})
+    
   }
 
   // Отменить создание задачи
@@ -106,14 +112,28 @@ class App extends Component {
               clikHandler={this.deleteTask}
               text='Удалить задачу' 
              />
-            
+
+
+            <DragDropContextProvider backend={HTML5Backend}>
+              <div>
             <ListLView 
               tasks={tasks}
               tasksOrder={tasksOrder}
               toogleChekbox={this.toogleChekbox}
               clickHnadlerButton={this.clickHnadlerButton}
             />
-            
+              <div className='separate'>/////////////////////////////////////////</div>
+            <ListLView 
+              tasks={tasks}
+              tasksOrder={tasksOrder}
+              toogleChekbox={this.toogleChekbox}
+              clickHnadlerButton={this.clickHnadlerButton}
+            />
+             </div>
+
+
+             
+            </DragDropContextProvider>
             <ModalBase 
               contentLabel='Создать задачу'
               isOpen={neededCreateNewTask }

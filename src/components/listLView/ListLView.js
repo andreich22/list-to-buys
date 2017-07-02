@@ -1,8 +1,19 @@
 import React, { Component} from 'react'
 import ListLtem from '../listItem/ListLtem'
+import { DropTarget } from 'react-dnd';
 
 
-export default class ListLView extends Component {
+const boxTarget = {
+  drop({ allowedDropEffect }) {
+    return {
+      name: `${allowedDropEffect} Dustbin`,
+      allowedDropEffect,
+    };
+  },
+};
+
+
+class ListLView extends Component {
 
     constructor(props) {
         super(props);
@@ -24,8 +35,15 @@ export default class ListLView extends Component {
 
     render() {
       
-      return <div>
+      return <div >
+        
               {this.renderListItem(this.props)}
-            </div>
+           </div>
     }
 }
+
+export default DropTarget('Item', boxTarget, (connect, monitor) => ({
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver(),
+  canDrop: monitor.canDrop(),
+}))(ListLView);
